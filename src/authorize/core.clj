@@ -7,13 +7,18 @@
             [authorize.accounts :as accounts]
             [authorize.transactions :as transactions]))
 
+(defn elseee
+  [evnt]
+  (-> evnt))
+
 (defn validations
   [event]
   (let [event-mapped (json/read-str event :key-fn keyword)]
   (println
     (match [event-mapped]
-      [{:account _}] (accounts/createAccount event-mapped)
+      [{:account _}] (accounts/create-account event-mapped)
       [{:transaction _}] (println "ewww")
+       :else (elseee event-mapped)
      )
   )
 ))

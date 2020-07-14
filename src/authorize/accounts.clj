@@ -3,21 +3,21 @@
 
 (defn hasAccount?
   []
-  (->
-    (db/search-by-table :account)
-    (empty?)
-    (not)))
+  (-> (db/search-by-table :account)
+      (empty?)
+      (not)))
+
+
+(defn already-initialized
+  [account-data]
+  (println {:account account-data, :violations ["account-already-initialized"]}))
 
 (defn create-new-account
   [account-data]
   (db/add :account account-data)
   (println {:account account-data, :violations []}))
 
-(defn already-initialized
-  [account-data]
-  (println {:account account-data, :violations [" account-already-initialized"]}))
-
-(defn createAccount
+(defn create-account
   [account]
   (let
     ; [{{active-card :activeCard, available-limit :availableLimit} :account} account]
