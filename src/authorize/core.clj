@@ -12,8 +12,8 @@
   (let [event-mapped (json/read-str event :key-fn keyword)]
   (println
     (match [event-mapped]
-      [{:account _}] (accounts/createAccount)
-      [{:transaction _}] (println event-mapped)
+      [{:account _}] (accounts/createAccount event-mapped)
+      [{:transaction _}] (println "ewww")
      )
   )
 ))
