@@ -1,31 +1,28 @@
 (ns authorize.accounts
-  (:require [authorize.database :as db]))
+  (:require [clojure.core.match :refer [match]]
+            [authorize.database :as db]))
 
-(defn hasAccount?
+(defn get-account
   []
-  (-> (db/search-by-table :account)
-      (empty?)
-      (not)))
-
+  (db/search-by-table :account))
 
 (defn already-initialized
   [account-data]
-  (println {:account account-data, :violations ["account-already-initialized"]}))
+  (str {:account account-data, :violations ["account-already-initialized"]}))
 
 (defn create-new-account
   [account-data]
-  (db/add :account account-data)
-  (println {:account account-data, :violations []}))
+  (db/add :account account-data []))
+
+(defn creating-rules
+  [account-data previous-account]
+  (match [previous-account]
+    [(previous-account :guard #(empty? %))] (create-new-account account-data)
+    :else (already-initialized previous-account)
+   ))
 
 (defn create-account
-  [account]
-  (let
-    ; [{{active-card :activeCard, available-limit :availableLimit} :account} account]
-    [{account-data :account } account]
-    (println account-data)
-    (if (hasAccount?)
-      (already-initialized account-data)
-      (create-new-account account-data)
-    )
-  )
-)
+  [new-account]
+  (let [previous-account (get-account)
+       {account-data :account} new-account]
+    (creating-rules account-data previous-account)))

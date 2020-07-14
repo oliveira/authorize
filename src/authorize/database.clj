@@ -2,7 +2,7 @@
 
 (def my-db (atom {}))
 
-(defn add [table doc] (swap! my-db update-in [table] conj doc))
+(defn add [table doc violations] (swap! my-db assoc :violations violations table doc))
 
 (defn search-by-name [table name]
   (filter #(= name (:name %)) (get @my-db table)))
