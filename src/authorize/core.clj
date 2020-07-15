@@ -17,8 +17,7 @@
   (println
     (match [event-mapped]
       [{:account _}] (accounts/create-account event-mapped)
-      [{:transaction _}] (println "ewww")
-       :else (elseee event-mapped)
+      [{:transaction _}] (transactions/create-transaction event-mapped)
      )
   )
 ))
