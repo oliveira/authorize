@@ -1,28 +1,21 @@
 (ns authorize.transactions
   (:require [authorize.accounts :as account]
-            [authorize.rules :as rule]))
+            [authorize.violations :as violations]))
 
-; (defn doubled-transaction [chain acc-state new-transaction violation]
-;   (let [{active-card :activeCard} acc-state
-;       {{merchant :merchant amount :amount} :transaction} new-transaction]
-;
-;     (rule/doubled-transaction))
+(defn capture [chain account-state new-transaction violations]
+  (let [{available-limit :availableLimit active-card :activeCard} account-state
+        {{amount :amount} :transaction} new-transaction
+        newAmount (- available-limit amount)]
 
-(defn capture [chain acc-state new-transaction violations]
-  (rule/capture acc-state new-transaction violations))
-
-(defn card-not-active [chain acc-state new-transaction violations]
-  (rule/card-not-active chain acc-state new-transaction violations))
-
-(defn insufficient-limit [chain acc-state new-transaction violations]
-  (rule/insufficient-limit chain acc-state new-transaction violations))
+    (if (= 0 (count violations))
+      (account/save {:activeCard active-card :availableLimit newAmount})
+      (str {:accountx account-state, :violations violations}))))
 
 (defn create-transaction [new-transaction]
   (let
     [chain
-      [insufficient-limit
-       card-not-active
-       doubled-transaction
+      [violations/insufficient-limit
+       violations/card-not-active
        capture]
-     acc-state (account/find-account)]
-    (rule/continue chain acc-state new-transaction [])))
+     account-state (account/find-account)]
+     (violations/continue chain account-state new-transaction [])))
