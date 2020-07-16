@@ -6,7 +6,8 @@
   :dependencies [[org.clojure/clojure "1.5.1"]
                  [org.clojure/tools.cli "0.2.4"]
                  [org.clojure/data.json "1.0.0"]
-                 [org.clojure/core.match "1.0.0"]]
+                 [org.clojure/core.match "1.0.0"]
+                 [clj-time "0.15.2"]]
   :bin {:name "authorize"}
   :plugins [[lein-bin "0.3.5"]]
   :main authorize.core)
