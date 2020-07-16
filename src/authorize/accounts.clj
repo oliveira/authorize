@@ -8,7 +8,7 @@
 
 (defn save
   [account-data]
-  (db/add :account account-data []))
+  (db/add db/account-db :account account-data []))
 
 (defn creating-rules
   [account previous-state]
@@ -18,7 +18,7 @@
 
 (defn find-account
   []
-  (db/search-by-table :account))
+  (db/search-by-table db/account-db :account))
 
 (defn create-account
   [new-account]

@@ -1,11 +1,14 @@
 (ns authorize.database)
 
-(def my-db (atom {}))
+(def account-db (atom {}))
 
-(defn add [table doc violations] (swap! my-db assoc :violations violations table doc))
+(defn add [db table doc violations] (swap! db assoc :violations violations table doc))
 
-(defn search-by-name [table name]
-  (filter #(= name (:name %)) (get @my-db table)))
+(defn search-by-name [db table name]
+  (filter #(= name (:name %)) (get @db table)))
 
-(defn search-by-table [table]
-  (get @my-db table))
+(defn search-by-table [db table]
+  (get @db table))
+
+
+; (def transaction-db (atom {}))
