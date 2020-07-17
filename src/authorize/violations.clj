@@ -20,8 +20,7 @@
 
 (defn card-not-active
   [chain account-state new-transaction violations]
-  (let [{active-card :activeCard} account-state
-        {{merchant :merchant} :transaction} new-transaction]
+  (let [{active-card :activeCard} account-state]
 
     (if (false? active-card)
       (continue chain account-state new-transaction (conj violations "card-not-active"))
@@ -45,21 +44,19 @@
   [interval dt]
   (time/within? interval dt))
 
-(defn get-transactions-in-time-interval
-  [transactions-list transaction delta]
-  (let [{{time :time} :transaction} transaction
-        interval (get-time-interval time delta)]
-
-    (filter (fn [tx]
-              (within-interval? interval (parse-date (:time tx)))) transactions-list)))
-
 (defn get-similar-transactions [tx-history transaction]
   (let [{{merchant :merchant amount :amount} :transaction} transaction]
-    (println merchant amount)
     (filter (fn [tx]
               (and (= amount (:amount tx))
                    (= merchant (:merchant tx))))
             tx-history)))
+
+(defn get-transactions-in-time-interval
+  [transactions-list transaction delta]
+  (let [{{time :time} :transaction} transaction
+        interval (get-time-interval time delta)]
+    (filter (fn [tx]
+              (within-interval? interval (parse-date (:time tx)))) transactions-list)))
 
 (defn transactions-two-minutes-interval
   [transactions-list transaction]
@@ -70,7 +67,6 @@
   (let [transactions-list (db/search-by-table db/transaction-db :transaction)
         listinha-sux (transactions-two-minutes-interval transactions-list new-transaction)
         similar-transactions (get-similar-transactions listinha-sux new-transaction)]
-    (println "similar trx count:" (count similar-transactions))
 
     (if (>= (count similar-transactions) 2)
       (continue chain account-state new-transaction (conj violations "doubled-transaction"))
