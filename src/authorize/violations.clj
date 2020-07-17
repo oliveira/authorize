@@ -6,7 +6,8 @@
 (defn continue [chain account-state new-transaction violations]
   (if chain
     (let [next-one (first chain)]
-      (next-one (rest chain) account-state new-transaction violations))))
+      (next-one (rest chain) account-state new-transaction violations))
+    (account-state new-transaction violations)))
 
 (defn insufficient-limit
   [chain account-state new-transaction violations]
