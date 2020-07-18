@@ -9,7 +9,6 @@ Simple authorization handler created for Nubank
 - [Arquitetura](#arquitetura)
 - [Dependencies](#dependencies)
 - [Setup](#setup)
-- [Run](#run)
 - [Violations](#violations)
   - [Already initialized](#already-initialized)
   - [Card not active](#card-not-active)
@@ -215,10 +214,6 @@ docker run -i authorizer < operations
 ```
 ---
 ## Development
-
-- [Run tests](#run-tests)
-- [Create and undo migrations](#create-and-undo-migrations)
-
 ### Run tests
 
 Run all unit tests (and :violations, :transactions or :accounts to run specific scenarios)
