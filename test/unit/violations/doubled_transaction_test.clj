@@ -5,9 +5,8 @@
 
 (facts "violated doubled-transaction"
   (against-background (db/search-by-table db/transaction-db :transaction)
-  => (list
-      { :merchant 333 :amount 10 :time "2019-02-13T10:59:00.000Z" },
-      { :merchant 333 :amount 10 :time "2019-02-13T10:59:30.000Z" }))
+  => [{ :merchant 333 :amount 10 :time "2019-02-13T10:59:00.000Z" },
+      { :merchant 333 :amount 10 :time "2019-02-13T10:59:30.000Z" }])
 
   (fact "doubled transaction"
     (doubled-transaction
@@ -25,9 +24,8 @@
 
 (facts "not violated doubled-transaction"
   (against-background (db/search-by-table db/transaction-db :transaction)
-  => (list
-      { :merchant 333 :amount 10 :time "2019-02-13T10:59:00.000Z" },
-      { :merchant 333 :amount 10 :time "2019-02-13T10:59:30.000Z" }))
+  => [{ :merchant 333 :amount 10 :time "2019-02-13T10:59:00.000Z" },
+      { :merchant 333 :amount 10 :time "2019-02-13T10:59:30.000Z" }])
 
   (fact "not doubled transaction"
     (doubled-transaction

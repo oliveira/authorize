@@ -4,7 +4,7 @@
 (def transaction-db (atom {}))
 
 (defn add [db table doc violations]
-  (swap! db assoc :violations violations table doc))
+  (swap! db assoc table doc :violations violations))
 
 (defn push [db table doc]
   (swap! db update-in [table] conj doc))

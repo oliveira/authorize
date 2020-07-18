@@ -1,10 +1,7 @@
 (ns authorize.accounts
   (:require [clojure.core.match :refer [match]]
-            [authorize.database :as db]))
-
-(defn already-initialized
-  [account-data]
-  (str {:account account-data, :violations ["account-already-initialized"]}))
+            [authorize.database :as db]
+            [authorize.violations :as violations]))
 
 (defn save
   [account-data]
@@ -14,7 +11,7 @@
   [account previous-state]
   (match [previous-state]
     [(previous-state :guard #(empty? %))] (save account)
-    [(previous-state :guard #(not (empty? %)))] (already-initialized previous-state)))
+    [(previous-state :guard #(not (empty? %)))] (violations/already-initialized previous-state)))
 
 (defn find-account
   []

@@ -1,7 +1,10 @@
 (ns authorize.violations
-  (:require [authorize.accounts :as account]
-            [authorize.database :as db]
+  (:require [authorize.database :as db]
             [clj-time [core :as time] [local :as local-time]]))
+
+(defn already-initialized
+  [account-data]
+  (str {:account account-data, :violations ["account-already-initialized"]}))
 
 (defn continue [chain account-state new-transaction violations]
   (if chain

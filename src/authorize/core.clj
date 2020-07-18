@@ -1,15 +1,10 @@
 (ns authorize.core
   (:require
-            [clojure.tools.cli :refer [cli]]
             [clojure.data.json :as json]
             [clojure.core.match :refer [match]]
             [authorize.events :as events]
             [authorize.accounts :as accounts]
             [authorize.transactions :as transactions]))
-
-(defn elseee
-  [evnt]
-  (-> evnt))
 
 (defn validations
   [event]
