@@ -87,7 +87,7 @@ bin/authorize < operations
 
 ### Already initialized
 
-Create a new transaction.
+Check if account was previously initialized. Return "account-already-initialized" if true.
 
 ##### Payload events example
 
@@ -111,7 +111,7 @@ docker run -i authorizer < operations
 ---
 ### Card not active
 
-Create a new transaction.
+Check if card is active at account entity. Return "card-not-active" if true and and block the transaction from been captured.
 
 ##### Payload events example
 
@@ -133,7 +133,7 @@ docker run -i authorizer < operations
 ---
 ### Doubled transaction
 
-Create a new transaction.
+Check if there were two or more transactions with the same merchant and amount in a time window (2 minutes). Return "doubled-transaction" if true and block the transaction from been captured.
 
 ##### Payload events example
 
@@ -159,7 +159,7 @@ docker run -i authorizer < operations
 ---
 ### High frequency at small interval
 
-Create a new transaction.
+Check if there were three or more transactions in a time window (2 minutes). Return "high-frequency-small-interval" if true and block the transaction from been captured.
 
 ##### Payload events example
 
@@ -192,7 +192,7 @@ docker run -i authorizer < operations
 ---
 ### Insufficient limit
 
-Create a new transaction.
+Check if available amount is bigger than the transaction amount. Return "insufficient-limit" if true and block the transaction from been captured.
 
 ##### Payload events example
 
