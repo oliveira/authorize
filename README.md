@@ -80,8 +80,10 @@ bin/authorize < operations
 ## Violations
 
 - [Already initialized](#already-initialized)
-- [GET /transactions](#get-/transactions)
-- [GET /payables](#get-/payables)
+- [Card not active](#card-not-active)
+- [Doubled transaction](#doubled-transaction)
+- [High frequency at small interval](#high-frequency-at-small-interval)
+- [Insufficient limit](#insufficient-limit)
 
 ### Already initialized
 
