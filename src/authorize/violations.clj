@@ -29,11 +29,9 @@
       (continue chain account-state new-transaction (conj violations "card-not-active"))
       (continue chain account-state new-transaction violations))))
 
-; usar a mesma query do tx-history para
-; doubled-transaction e high-frequency-small-interval
 (defn parse-date
-  [dt]
-  (local-time/to-local-date-time dt))
+  [date]
+  (local-time/to-local-date-time date))
 
 (defn get-time-interval
   [end-limit delta]
@@ -44,15 +42,15 @@
     (time/interval start end)))
 
 (defn within-interval?
-  [interval dt]
-  (time/within? interval dt))
+  [interval date]
+  (time/within? interval date))
 
-(defn get-similar-transactions [tx-history transaction]
+(defn get-similar-transactions [transactions-list transaction]
   (let [{{merchant :merchant amount :amount} :transaction} transaction]
-    (filter (fn [tx]
-              (and (= amount (:amount tx))
-                   (= merchant (:merchant tx))))
-            tx-history)))
+    (filter (fn [transaction]
+              (and (= amount (:amount transaction))
+                   (= merchant (:merchant transaction))))
+            transactions-list)))
 
 (defn get-transactions-in-time-interval
   [transactions-list transaction delta]
@@ -68,8 +66,8 @@
 (defn doubled-transaction
   [chain account-state new-transaction violations]
   (let [transactions-list (db/search-by-table db/transaction-db :transaction)
-        listinha-sux (transactions-two-minutes-interval transactions-list new-transaction)
-        similar-transactions (get-similar-transactions listinha-sux new-transaction)]
+        interval-transactions (transactions-two-minutes-interval transactions-list new-transaction)
+        similar-transactions (get-similar-transactions interval-transactions new-transaction)]
 
     (if (>= (count similar-transactions) 2)
       (continue chain account-state new-transaction (conj violations "doubled-transaction"))
@@ -78,8 +76,8 @@
 (defn high-frequency-small-interval
   [chain account-state new-transaction violations]
   (let [transactions-list (db/search-by-table db/transaction-db :transaction)
-        listinha-sux (transactions-two-minutes-interval transactions-list new-transaction)]
+        interval-transactions (transactions-two-minutes-interval transactions-list new-transaction)]
 
-    (if (>= (count listinha-sux) 3)
+    (if (>= (count interval-transactions) 3)
       (continue chain account-state new-transaction (conj violations "high-frequency-small-interval"))
       (continue chain account-state new-transaction violations))))

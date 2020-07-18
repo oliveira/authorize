@@ -22,7 +22,7 @@ Simple authorization handler created for Nubank
 
 ## Dependencies
 
-- [Clojure = 1.10.1](https://clojure.org/guides/getting_started#_clojure_installer_and_cli_tools) 
+- [Clojure = 1.10.1](https://clojure.org/guides/getting_started#_clojure_installer_and_cli_tools)
 - [Leiningen = ^2.9.3](https://leiningen.org/#install)
 - [Docker](https://docs.docker.com/get-docker)
 
@@ -33,7 +33,7 @@ Simple authorization handler created for Nubank
 - [Uberjar: build and usage](#uberjar-build-and-usage)
 - [Binary: build and usage](#binary-build-and-usage)
 
-### Docker: build and usage 
+### Docker: build and usage
 
 This script uses the same [environment variables](https://www.postgresql.org/docs/9.1/static/libpq-envars.html) as libpq to connect to a PostgreSQL server.
 
@@ -45,7 +45,7 @@ docker build -t authorizer .
 docker run -i authorizer < operations
 ```
 
-### Lein usage 
+### Lein usage
 
 This script uses the same [environment variables](https://www.postgresql.org/docs/9.1/static/libpq-envars.html) as libpq to connect to a PostgreSQL server.
 
@@ -53,7 +53,7 @@ This script uses the same [environment variables](https://www.postgresql.org/doc
 lein run < operations
 ```
 
-### Uberjar: build and usage 
+### Uberjar: build and usage
 
 This script uses the same [environment variables](https://www.postgresql.org/docs/9.1/static/libpq-envars.html) as libpq to connect to a PostgreSQL server.
 
@@ -65,7 +65,7 @@ lein uberjar
 java -jar target/authorize-standalone.jar < operation
 ```
 
-### Binary: build and usage 
+### Binary: build and usage
 
 This script uses the same [environment variables](https://www.postgresql.org/docs/9.1/static/libpq-envars.html) as libpq to connect to a PostgreSQL server.
 
@@ -223,4 +223,3 @@ Run all unit tests (and :violations, :transactions or :accounts to run specific 
 ```bash
 lein midje
 ```
-

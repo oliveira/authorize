@@ -16,4 +16,7 @@
 
   (fact "creating account with previous account"
     (accounts/creating-rules {:activeCard true, :availableLimit 100} {:activeCard true, :availableLimit 100})
-      => (str {:account {:activeCard true, :availableLimit 100}, :violations ["account-already-initialized"]}))
+      => (str {:account {:activeCard true, :availableLimit 100}, :violations ["account-already-initialized"]})
+
+  (fact "save account data"
+    (accounts/save-account {:activeCard true :availableLimit 100}) => {:account {:activeCard true :availableLimit 100} :violations []}))

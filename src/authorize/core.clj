@@ -16,7 +16,6 @@
       [{:transaction _}] (transactions/create-transaction event-mapped)
      ))))
 
-
 (defn validations-apply
   [events]
   (->> events
