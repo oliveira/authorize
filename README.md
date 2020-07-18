@@ -79,12 +79,6 @@ bin/authorize < operations
 
 ## Violations
 
-- [Already initialized](#already-initialized)
-- [Card not active](#card-not-active)
-- [Doubled transaction](#doubled-transaction)
-- [High frequency at small interval](#high-frequency-at-small-interval)
-- [Insufficient limit](#insufficient-limit)
-
 ### Already initialized
 
 Check if account was previously initialized. Return "account-already-initialized" if true.
