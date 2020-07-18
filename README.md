@@ -10,10 +10,12 @@ Simple authorization handler created for Nubank
 - [Dependencies](#dependencies)
 - [Setup](#setup)
 - [Run](#run)
-- [API](#api)
-  - [POST /transactions](#post-/transactions)
-  - [GET /transactions](#get-/transactions)
-  - [GET /payables](#get-/payables)
+- [Violations](#violations)
+  - [Already initialized](#already-initialized)
+  - [Card not active](#card-not-active)
+  - [Doubled transaction](#doubled-transaction)
+  - [High frequency at small interval](#high-frequency-at-small-interval)
+  - [Insufficient limit](#insufficient-limit)
 - [Development](#development)
 
 ## Arquitetura
@@ -75,227 +77,144 @@ lein bin
 bin/authorize < operations
 ```
 
-## API
+## Violations
 
-- [POST /transactions](#post-/transactions)
+- [Already initialized](#already-initialized)
 - [GET /transactions](#get-/transactions)
 - [GET /payables](#get-/payables)
 
-### POST /transactions
+### Already initialized
 
 Create a new transaction.
 
-#### Request body params
-
-| Name                 | Type   | Required | Description                                                      |
-| -------------------- | ------ | -------- | ---------------------------------------------------------------- |
-| amount           | number | true     | The transaction amount value                                     |
-| description      | string | false    | The description of the transaction                               |
-| paymentMethod    | string | true     | The payment method. Possible values: _CREDIT_CARD_, _DEBIT_CARD_ |
-| cardNumber       | string | true     | The card number                                                  |
-| expirationDate   | string | true     | The card expiration date. Format: _MM/YY_                        |
-| verificationCode | string | true     | The card verification value                                      |
-
-##### Request body example
-
-> POST /boletos
+##### Payload events example
 
 ```json
-{
-  "amount": 300.75,
-  "paymentMethod": "DEBIT_CARD",
-  "cardNumber": "4984238052310065",
-  "cardOwner": "Eduardo G S Pereira",
-  "expirationDate": "03/21",
-  "verificationCode": "102"
-}
+{ "account": { "activeCard": true, "availableLimit": 100 } }
+{ "account": { "activeCard": true, "availableLimit": 100 } }
+{ "transaction": { "merchant": "333", "amount": 10, "time": "2019-02-13T11:00:00.000Z" } }
 ```
-
-#### Request example
 
 ```bash
-curl --request POST \
---url 'http://localhost:3000/transactions' \
---header 'content-type: application/json' \
---data '{"amount": 300.75,"paymentMethod": "DEBIT_CARD",
-         "cardNumber": "4984238052310065","cardOwner": "Eduardo G S Pereira",
-         "expirationDate": "03/21","verificationCode": "102"}' \
---include
+docker run -i authorizer < operations
 ```
 
-#### Success response example
-
-```bash
-HTTP/1.1 201 Created
-Access-Control-Allow-Origin: *
-X-DNS-Prefetch-Control: off
-X-Frame-Options: SAMEORIGIN
-Strict-Transport-Security: max-age=15552000; includeSubDomains
-X-Download-Options: noopen
-X-Content-Type-Options: nosniff
-X-XSS-Protection: 1; mode=block
-Content-Type: application/json; charset=utf-8
-Content-Length: 2
-ETag: W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"
-Vary: Accept-Encoding
-Date: Tue, 02 Jul 2019 09:13:37 GMT
-Connection: keep-alive
-
-{}
-```
-#### Bad request response example
-
-```bash
-HTTP/1.1 400 Bad Request
-Access-Control-Allow-Origin: *
-X-DNS-Prefetch-Control: off
-X-Frame-Options: SAMEORIGIN
-Strict-Transport-Security: max-age=15552000; includeSubDomains
-X-Download-Options: noopen
-X-Content-Type-Options: nosniff
-X-XSS-Protection: 1; mode=block
-Content-Type: application/json; charset=utf-8
-Content-Length: 2
-ETag: W/"2-vyGp6PvFo4RvsFtPoIWeCReyIC8"
-Vary: Accept-Encoding
-Date: Tue, 02 Jul 2019 09:13:37 GMT
-Connection: keep-alive
-
-{
-  "errors": [
-    {
-      "location": "body",
-      "param": "email",
-      "value": "",
-      "msg": "Invalid value"
-    }
-  ]
-}
-```
-
-
-### GET /transactions
-
-List available transactions.
-
-#### Response body params
-
-| Name                   | Type   | Description                               |
-| ---------------------- | ------ | ----------------------------------------- |
-| transactionId      | string | The ID for the transaction                |
-| amount             | number | The transaction amount value              |
-| description        | string | The description of the transaction        |
-| paymentMethod      | string | The payment method                        |
-| cardLastFourDigits | string | The last four digits from the card number |
-| expirationDate     | string | The card expiration date                  |
-| verificationCode   | string | The card verification value               |
-
-##### Response body example
-
-> GET /transactions
+#### Output
 
 ```json
-[
-  {
-    "transactionId": "b65a5674-f9c2-4caf-86fa-0aaaa6398726",
-    "amount": 300.13,
-    "description": null,
-    "paymentMethod": "DEBIT_CARD",
-    "cardLastFourDigits": "0065",
-    "cardOwner": "Eduardo G S Pereira",
-    "expirationDate": "03/2021",
-    "verificationCode": "102"
-  },
-  {
-    "transactionId": "5c479b89-ae9c-434c-851c-22b48de1c374",
-    "amount": 1050.79,
-    "description": "Smartband XYZ 3.0",
-    "paymentMethod": "CREDIT_CARD",
-    "cardLastFourDigits": "1578",
-    "cardOwner": "Indiana Jones",
-    "expirationDate": "03/2021",
-    "verificationCode": "102"
-  }
-]
+{:account {:activeCard true, :availableLimit 100}, :violations []}
+{:account {:activeCard true, :availableLimit 100}, :violations ["account-already-initialized"]}
+{:account {:activeCard true, :availableLimit 90}, :violations []}
 ```
 
-#### Request example
+### Card not active
 
-```bash
-curl --url 'http://localhost:3000/transactions' --include
-```
+Create a new transaction.
 
-#### Response example
-
-```bash
-HTTP/1.1 200 OK
-Access-Control-Allow-Origin: *
-X-DNS-Prefetch-Control: off
-X-Frame-Options: SAMEORIGIN
-Strict-Transport-Security: max-age=15552000; includeSubDomains
-X-Download-Options: noopen
-X-Content-Type-Options: nosniff
-X-XSS-Protection: 1; mode=block
-Content-Type: application/json; charset=utf-8
-Content-Length: 2097
-ETag: W/"831-JIMUzB9LV54mD8GqTscE32TTzIo"
-Vary: Accept-Encoding
-Date: Tue, 02 Jul 2019 09:38:04 GMT
-Connection: keep-alive
-
-[{"transactionId":"b65a5674-f9c2-4caf-86fa-0aaaa6398726",
-  "amount":300,"description":null,"paymentMethod":"DEBIT_CARD",
-  "cardLastFourDigits":"0065","cardOwner":"Eduardo G S Pereira",
-  "expirationDate":"03/2021","verificationCode":"102"}]
-```
-
-### GET /payables
-
-List the available payable.
-
-#### Response body params
-
-| Name             | Type   | Description                             |
-| ---------------- | ------ | --------------------------------------- |
-| available    | number | The total amount available for the user |
-| waitingFunds | number | The amount that are waiting funds       |
-
-##### Request body example
-
-> GET /payables
+##### Payload events example
 
 ```json
-{
-  "available": 2417.1,
-  "waitingFunds": 28.62
-}
+{ "account": { "activeCard": false, "availableLimit": 100 } }
+{ "transaction": { "merchant": "333", "amount": 10, "time": "2019-02-13T11:00:00.000Z" } }
 ```
 
-#### Request example
-
 ```bash
-curl --url 'http://localhost:3000/payables' --include
+docker run -i authorizer < operations
 ```
 
-#### Response example
+#### Output
+
+```json
+{:account {:activeCard true, :availableLimit 100}, :violations []}
+{:account {:activeCard true, :availableLimit 100}, :violations ["card-not-active"]}
+```
+
+### Doubled transaction
+
+Create a new transaction.
+
+##### Payload events example
+
+```json
+{ "account": { "activeCard": false, "availableLimit": 100 } }
+{ "transaction": { "merchant": "333", "amount": 10, "time": "2019-02-13T11:00:00.000Z" } }
+{ "transaction": { "merchant": "333", "amount": 10, "time": "2019-02-13T11:00:00.000Z" } }
+{ "transaction": { "merchant": "333", "amount": 10, "time": "2019-02-13T11:00:00.000Z" } }
+```
 
 ```bash
-HTTP/1.1 200 OK
-Access-Control-Allow-Origin: *
-X-DNS-Prefetch-Control: off
-X-Frame-Options: SAMEORIGIN
-Strict-Transport-Security: max-age=15552000; includeSubDomains
-X-Download-Options: noopen
-X-Content-Type-Options: nosniff
-X-XSS-Protection: 1; mode=block
-Content-Type: application/json; charset=utf-8
-Content-Length: 41
-ETag: W/"29-zMxJefaVfxTPUE50GOPHJdaSjMI"
-Vary: Accept-Encoding
-Date: Tue, 02 Jul 2019 09:59:15 GMT
-Connection: keep-alive
+docker run -i authorizer < operations
+```
 
-{"available":2417.1,"waitingFunds":28.62}
+#### Output
+
+```json
+{:account {:activeCard true, :availableLimit 100}, :violations []}
+{:account {:activeCard true, :availableLimit 90}, :violations []}
+{:account {:activeCard true, :availableLimit 80}, :violations []}
+{:account {:activeCard true, :availableLimit 80}, :violations ["doubled-transaction"]}
+```
+
+
+### High frequency at small interval
+
+Create a new transaction.
+
+##### Payload events example
+
+```json
+{ "account": { "activeCard": true, "availableLimit": 100 } }
+{ "transaction": { "merchant": "111", "amount": 10, "time": "2019-02-13T11:00:10.000Z" } }
+{ "transaction": { "merchant": "111", "amount": 10, "time": "2019-02-13T11:00:43.000Z" } }
+{ "transaction": { "merchant": "333", "amount": 10, "time": "2019-02-13T11:00:55.000Z" } }
+{ "transaction": { "merchant": "444", "amount": 10, "time": "2019-02-13T11:00:59.000Z" } }
+{ "transaction": { "merchant": "555", "amount": 10, "time": "2019-02-13T11:01:11.000Z" } }
+{ "transaction": { "merchant": "555", "amount": 10, "time": "2019-02-13T11:05:11.000Z" } }
+```
+
+```bash
+docker run -i authorizer < operations
+```
+
+#### Output
+
+```json
+{:account {:activeCard true, :availableLimit 100}, :violations []}
+{:account {:activeCard true, :availableLimit 90}, :violations []}
+{:account {:activeCard true, :availableLimit 80}, :violations []}
+{:account {:activeCard true, :availableLimit 70}, :violations []}
+{:account {:activeCard true, :availableLimit 70}, :violations ["high-frequency-small-interval"]}
+{:account {:activeCard true, :availableLimit 70}, :violations ["high-frequency-small-interval"]}
+{:account {:activeCard true, :availableLimit 60}, :violations []}
+
+```
+
+
+
+### Insuffiecient limit
+
+Create a new transaction.
+
+##### Payload events example
+
+```json
+{ "account": { "activeCard": true, "availableLimit": 60 } }
+{ "transaction": { "merchant": "111", "amount": 50, "time": "2019-02-13T11:00:10.000Z" } }
+{ "transaction": { "merchant": "111", "amount": 13, "time": "2019-02-13T11:00:43.000Z" } }
+
+```
+
+```bash
+docker run -i authorizer < operations
+```
+
+#### Output
+
+```json
+{:account {:activeCard true, :availableLimit 60}, :violations []}
+{:account {:activeCard true, :availableLimit 10}, :violations []}
+{:account {:activeCard true, :availableLimit 10}, :violations ["insufficient-limit"]}
+
 ```
 
 ## Development
