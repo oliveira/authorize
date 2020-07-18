@@ -13,9 +13,8 @@
     (match [event-mapped]
       [{:account _}] (accounts/create-account event-mapped)
       [{:transaction _}] (transactions/create-transaction event-mapped)
-     )
-  )
-))
+     ))))
+
 
 (defn validations-apply
   [events]

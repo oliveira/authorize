@@ -3,14 +3,14 @@
             [authorize.database :as db]
             [authorize.violations :as violations]))
 
-(defn save
+(defn save-account
   [account-data]
   (db/add db/account-db :account account-data []))
 
 (defn creating-rules
   [account previous-state]
   (match [previous-state]
-    [(previous-state :guard #(empty? %))] (save account)
+    [(previous-state :guard #(empty? %))] (save-account account)
     [(previous-state :guard #(not (empty? %)))] (violations/already-initialized previous-state)))
 
 (defn find-account

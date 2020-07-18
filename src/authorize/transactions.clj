@@ -10,12 +10,12 @@
         newAmount (- available-limit amount)]
 
   (db/push db/transaction-db :transaction (:transaction new-transaction))
-  (account/save {:activeCard active-card :availableLimit newAmount})))
+  (account/save-account {:activeCard active-card :availableLimit newAmount})))
 
 (defn capture [chain account-state new-transaction violations]
     (if (= 0 (count violations))
       (persist-data account-state new-transaction violations)
-      (str {:accountx account-state, :violations violations})))
+      (str {:account account-state, :violations violations})))
 
 (defn create-transaction [new-transaction]
   (let [chain
