@@ -17,6 +17,7 @@ Simple authorization handler created for Nubank
   - [High frequency at small interval](#high-frequency-at-small-interval)
   - [Insufficient limit](#insufficient-limit)
 - [Development](#development)
+  - [Run tests](#run-tests)
 
 ## Arquitetura
 
@@ -220,16 +221,9 @@ docker run -i authorizer < operations
 
 ### Run tests
 
-Full tests and test coverage
-
-Please, set environment variables to a test database.
+Run all unit tests (and :violations, :transactions or :accounts to run specific scenarios)
 
 ```bash
-yarn test
+lein midje
 ```
 
-Unit tests and watch for changes
-
-```bash
-yarn run unit-test
-```
