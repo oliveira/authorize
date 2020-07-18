@@ -101,12 +101,12 @@ docker run -i authorizer < operations
 
 #### Output
 
-```json
+```
 {:account {:activeCard true, :availableLimit 100}, :violations []}
 {:account {:activeCard true, :availableLimit 100}, :violations ["account-already-initialized"]}
 {:account {:activeCard true, :availableLimit 90}, :violations []}
 ```
-
+---
 ### Card not active
 
 Create a new transaction.
@@ -124,11 +124,11 @@ docker run -i authorizer < operations
 
 #### Output
 
-```json
+```
 {:account {:activeCard true, :availableLimit 100}, :violations []}
 {:account {:activeCard true, :availableLimit 100}, :violations ["card-not-active"]}
 ```
-
+---
 ### Doubled transaction
 
 Create a new transaction.
@@ -148,14 +148,13 @@ docker run -i authorizer < operations
 
 #### Output
 
-```json
+```
 {:account {:activeCard true, :availableLimit 100}, :violations []}
 {:account {:activeCard true, :availableLimit 90}, :violations []}
 {:account {:activeCard true, :availableLimit 80}, :violations []}
 {:account {:activeCard true, :availableLimit 80}, :violations ["doubled-transaction"]}
 ```
-
-
+---
 ### High frequency at small interval
 
 Create a new transaction.
@@ -178,7 +177,7 @@ docker run -i authorizer < operations
 
 #### Output
 
-```json
+```
 {:account {:activeCard true, :availableLimit 100}, :violations []}
 {:account {:activeCard true, :availableLimit 90}, :violations []}
 {:account {:activeCard true, :availableLimit 80}, :violations []}
@@ -188,10 +187,8 @@ docker run -i authorizer < operations
 {:account {:activeCard true, :availableLimit 60}, :violations []}
 
 ```
-
-
-
-### Insuffiecient limit
+---
+### Insufficient limit
 
 Create a new transaction.
 
@@ -207,16 +204,15 @@ Create a new transaction.
 ```bash
 docker run -i authorizer < operations
 ```
-
 #### Output
 
-```json
+```
 {:account {:activeCard true, :availableLimit 60}, :violations []}
 {:account {:activeCard true, :availableLimit 10}, :violations []}
 {:account {:activeCard true, :availableLimit 10}, :violations ["insufficient-limit"]}
 
 ```
-
+---
 ## Development
 
 - [Run tests](#run-tests)
