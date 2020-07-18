@@ -4,7 +4,8 @@
             [clojure.core.match :refer [match]]
             [authorize.events :as events]
             [authorize.accounts :as accounts]
-            [authorize.transactions :as transactions]))
+            [authorize.transactions :as transactions])
+  (:gen-class))
 
 (defn validations
   [event]
