@@ -78,6 +78,8 @@ bin/authorize < operations
 ```
 
 ## Violations
+Are a set of rules that transactions must satisfy to be captured.
+
 
 ### Already initialized
 
