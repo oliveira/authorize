@@ -2,16 +2,32 @@
   (:require [midje.sweet :refer :all]
             [authorize.violations :refer :all]))
 
-(facts "violated card-not-active"
-  (fact "card not active"
-    (card-not-active nil {:activeCard false} {:transaction {:amount 120}} []) => ["card-not-active"])
+(facts "card not active scenario"
+  (fact "should return a violation list with 'card-not-active' message"
+    (get-in (card-not-active {:chain nil
+                              :account-state {:activeCard false}
+                              :new-transaction {:transaction {:amount 120}}
+                              :violations []}) [:violations])
+      => ["card-not-active"])
 
-  (fact "already had a violation at list"
-    (card-not-active nil {:activeCard false} {:transaction {:amount 120}} ["another-violation"]) => ["another-violation" "card-not-active"]))
+  (fact "should keep previous violations and append 'card-not-active'"
+    (get-in (card-not-active {:chain nil
+                              :account-state {:activeCard false}
+                              :new-transaction {:transaction {:amount 120}}
+                              :violations ["another-violation"]}) [:violations])
+      => ["another-violation" "card-not-active"]))
 
-(facts "not violated card-not-active"
+(facts "card active scenario"
   (fact "card active"
-    (card-not-active nil {:activeCard true} {:transaction {:amount 120}} []) => [])
+    (get-in (card-not-active {:chain nil
+                      :account-state {:activeCard true}
+                      :new-transaction {:transaction {:amount 120}}
+                      :violations []}) [:violations])
+       => [])
 
-  (fact "already had a violation at list"
-    (card-not-active nil {:activeCard true} {:transaction {:amount 120}} ["another-violation"]) => ["another-violation"]))
+ (fact "card active and a violation"
+   (get-in (card-not-active {:chain nil
+                     :account-state {:activeCard true}
+                     :new-transaction {:transaction {:amount 120}}
+                     :violations ["another-violation"]}) [:violations])
+      => ["another-violation"]))

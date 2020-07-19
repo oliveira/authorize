@@ -13,18 +13,24 @@
   (account/save-account {:activeCard active-card :availableLimit newAmount})))
 
 (defn capture
-  [chain account-state new-transaction violations]
-  (if (= 0 (count violations))
-    (persist-data account-state new-transaction violations)
-    (str {:account account-state, :violations violations})))
+  [context]
+  (let [account-state (get-in context [:account-state])
+        new-transaction (get-in context [:new-transaction])
+        violations (get-in context [:violations])]
+
+    (if (empty? violations)
+      (persist-data account-state new-transaction violations)
+      (str {:account account-state, :violations violations}))))
 
 (defn create-transaction
   [new-transaction]
-  (let [chain
-         [violations/insufficient-limit
-          violations/card-not-active
-          violations/doubled-transaction!
-          violations/high-frequency-small-interval!
-          capture]
-        account-state (account/find-account)]
-    (violations/continue chain account-state new-transaction [])))
+  (let [context {:chain [violations/insufficient-limit
+                         violations/card-not-active
+                         violations/doubled-transaction
+                         violations/high-frequency-small-interval
+                         capture]
+                 :account-state (account/find-account)
+                 :new-transaction new-transaction
+                 :violations []}]
+
+    (violations/continue context)))

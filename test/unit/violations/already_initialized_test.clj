@@ -4,8 +4,12 @@
 
 (facts "violated already-initialized"
   (fact "when account already initialized"
-    (creating-rules {:activeCard true, :availableLimit 222} {:activeCard true, :availableLimit 100}) => (str {:account {:activeCard true, :availableLimit 100}, :violations ["account-already-initialized"]})))
+    (creating-rules {:activeCard true :availableLimit 222}
+                    {:activeCard true, :availableLimit 100})
+      => {:account {:activeCard true, :availableLimit 100}, :violations ["account-already-initialized"]}))
 
 (facts "not violated already-initialized"
   (fact "when account is been initialized"
-    (creating-rules {:activeCard true, :availableLimit 100} nil) => {:violations [], :account {:activeCard true, :availableLimit 100}}))
+    (creating-rules {:activeCard true, :availableLimit 100}
+                     nil)
+      => {:violations [], :account {:activeCard true, :availableLimit 100}}))

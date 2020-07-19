@@ -4,30 +4,36 @@
 
 (defn already-initialized
   [account-data]
-  (str {:account account-data, :violations ["account-already-initialized"]}))
+  {:account account-data, :violations ["account-already-initialized"]})
 
-(defn continue [chain account-state new-transaction violations]
-  (if chain
-    (let [next-one (first chain)]
-      (next-one (rest chain) account-state new-transaction violations))
-    (account-state new-transaction violations)))
+(defn continue
+  [context]
+  (let [chain (:chain context)]
+    (if chain
+      (let [next-one (first chain)] (next-one (assoc context :chain (rest chain))))
+      (dissoc context :chain)
+      )
+    )
+  )
 
 (defn insufficient-limit
-  [chain account-state new-transaction violations]
-  (let [{available-limit :availableLimit} account-state
-        {{amount :amount} :transaction} new-transaction]
+  [context]
+  (let [available-limit (get-in context [:account-state :availableLimit])
+        amount (get-in context [:new-transaction :transaction :amount])
+        violations (get-in context [:violations])]
 
     (if (> amount available-limit)
-      (continue chain account-state new-transaction (conj violations "insufficient-limit"))
-      (continue chain account-state new-transaction violations))))
+      (continue (update-in context [:violations] conj "insufficient-limit"))
+      (continue context))))
 
 (defn card-not-active
-  [chain account-state new-transaction violations]
-  (let [{active-card :activeCard} account-state]
+  [context]
+  (let [active-card (get-in context [:account-state :activeCard])
+        violations (get-in context [:violations])]
 
     (if (false? active-card)
-      (continue chain account-state new-transaction (conj violations "card-not-active"))
-      (continue chain account-state new-transaction violations))))
+      (continue (update-in context [:violations] conj "card-not-active"))
+      (continue context))))
 
 (defn parse-date
   [date]
@@ -63,21 +69,24 @@
   [transactions-list transaction]
   (get-transactions-in-time-interval transactions-list transaction 2))
 
-(defn doubled-transaction!
-  [chain account-state new-transaction violations]
+(defn doubled-transaction
+  [context]
   (let [transactions-list (db/search-by-table db/transaction-db :transaction)
+        new-transaction (get-in context [:new-transaction])
         interval-transactions (transactions-two-minutes-interval transactions-list new-transaction)
-        similar-transactions (get-similar-transactions interval-transactions new-transaction)]
+        similar-transactions (get-similar-transactions interval-transactions new-transaction)
+        violations (get-in context [:violations])]
 
     (if (>= (count similar-transactions) 2)
-      (continue chain account-state new-transaction (conj violations "doubled-transaction"))
-      (continue chain account-state new-transaction violations))))
+      (continue (update-in context [:violations] conj "doubled-transaction"))
+      (continue context))))
 
-(defn high-frequency-small-interval!
-  [chain account-state new-transaction violations]
+(defn high-frequency-small-interval
+  [context]
   (let [transactions-list (db/search-by-table db/transaction-db :transaction)
+        new-transaction (get-in context [:new-transaction])
         interval-transactions (transactions-two-minutes-interval transactions-list new-transaction)]
 
     (if (>= (count interval-transactions) 3)
-      (continue chain account-state new-transaction (conj violations "high-frequency-small-interval"))
-      (continue chain account-state new-transaction violations))))
+      (continue (update-in context [:violations] conj "high-frequency-small-interval"))
+      (continue context))))

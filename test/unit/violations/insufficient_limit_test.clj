@@ -2,25 +2,48 @@
   (:require [midje.sweet :refer :all]
             [authorize.violations :refer :all]))
 
-(facts "violated insufficient-limit"
+(facts "insufficient limit scenario"
   (fact "amount > than limit"
-    (insufficient-limit nil {:availableLimit 100} {:transaction {:amount 120}} []) => ["insufficient-limit"])
+    (get-in (insufficient-limit {:chain nil
+                                 :account-state {:availableLimit 100}
+                                 :new-transaction {:transaction {:amount 120}}
+                                 :violations []}) [:violations])
+      => ["insufficient-limit"])
 
   (fact "already had a violation at list"
-    (insufficient-limit nil {:availableLimit 100} {:transaction {:amount 120}} ["another-violation"]) => ["another-violation" "insufficient-limit"]))
+    (get-in (insufficient-limit {:chain nil
+                                 :account-state {:availableLimit 100}
+                                 :new-transaction {:transaction {:amount 120}}
+                                 :violations ["another-violation"]}) [:violations])
+      => ["another-violation" "insufficient-limit"]))
 
-(facts "not violated insufficient-limit"
+(facts "sufficient limit scenario"
   (fact "amount < than limit"
-    (insufficient-limit nil {:availableLimit 100} {:transaction {:amount 50}} []) => [])
+  (get-in (insufficient-limit {:chain nil
+                               :account-state {:availableLimit 100}
+                               :new-transaction {:transaction {:amount 50}}
+                               :violations []}) [:violations]) => [])
 
   (fact "amount equal to limit"
-    (insufficient-limit nil {:availableLimit 100} {:transaction {:amount 100}} []) => [])
+  (get-in (insufficient-limit {:chain nil
+                               :account-state {:availableLimit 100}
+                               :new-transaction {:transaction {:amount 100}}
+                               :violations []}) [:violations]) => [])
 
   (fact "amount zero"
-    (insufficient-limit nil {:availableLimit 100} {:transaction {:amount 0}} []) => [])
+  (get-in (insufficient-limit {:chain nil
+                               :account-state {:availableLimit 100}
+                               :new-transaction {:transaction {:amount 0}}
+                               :violations []}) [:violations]) => [])
 
   (fact "negative amount"
-    (insufficient-limit nil {:availableLimit 100} {:transaction {:amount -50}} []) => [])
+  (get-in (insufficient-limit {:chain nil
+                               :account-state {:availableLimit 100}
+                               :new-transaction {:transaction {:amount -50}}
+                               :violations []}) [:violations]) => [])
 
-  (fact "already had a violation at list"
-    (insufficient-limit nil {:availableLimit 100} {:transaction {:amount 20}} ["another-violation"]) => ["another-violation"]))
+  (fact "with violation in list"
+  (get-in (insufficient-limit {:chain nil
+                               :account-state {:availableLimit 100}
+                               :new-transaction {:transaction {:amount 20}}
+                               :violations ["another-violation"]}) [:violations]) => ["another-violation"]))
