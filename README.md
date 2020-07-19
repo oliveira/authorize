@@ -134,7 +134,7 @@ Check if there were two or more transactions with the same merchant and amount i
 ##### Payload events example
 
 ```json
-{ "account": { "activeCard": false, "availableLimit": 100 } }
+{ "account": { "activeCard": true, "availableLimit": 100 } }
 { "transaction": { "merchant": "333", "amount": 10, "time": "2019-02-13T11:00:00.000Z" } }
 { "transaction": { "merchant": "333", "amount": 10, "time": "2019-02-13T11:00:00.000Z" } }
 { "transaction": { "merchant": "333", "amount": 10, "time": "2019-02-13T11:00:00.000Z" } }
