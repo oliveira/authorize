@@ -12,9 +12,7 @@
     (if chain
       (let [next-one (first chain)] (next-one (assoc context :chain (rest chain))))
       (dissoc context :chain)
-      )
-    )
-  )
+      )))
 
 (defn insufficient-limit
   [context]
@@ -69,7 +67,7 @@
   [transactions-list transaction]
   (get-transactions-in-time-interval transactions-list transaction 2))
 
-(defn doubled-transaction
+(defn doubled-transaction!
   [context]
   (let [transactions-list (db/search-by-table db/transaction-db :transaction)
         new-transaction (get-in context [:new-transaction])
@@ -81,7 +79,7 @@
       (continue (update-in context [:violations] conj "doubled-transaction"))
       (continue context))))
 
-(defn high-frequency-small-interval
+(defn high-frequency-small-interval!
   [context]
   (let [transactions-list (db/search-by-table db/transaction-db :transaction)
         new-transaction (get-in context [:new-transaction])

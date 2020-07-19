@@ -11,14 +11,14 @@
       { :merchant 333 :amount 10 :time "2019-02-13T10:59:00.000Z" }])
 
   (fact "high frequency transaction creation"
-    (get-in (high-frequency-small-interval {:chain nil
+    (get-in (high-frequency-small-interval! {:chain nil
                                              :account-state {:activeCard false}
                                              :new-transaction {:transaction { :merchant 333 :amount 10 :time "2019-02-13T11:00:00.000Z" }}
                                              :violations []}) [:violations])
       => ["high-frequency-small-interval"])
 
   (fact "already had a violation at list"
-    (get-in (high-frequency-small-interval {:chain nil
+    (get-in (high-frequency-small-interval! {:chain nil
                                              :account-state {:activeCard false}
                                              :new-transaction {:transaction { :merchant 333 :amount 10 :time "2019-02-13T11:00:00.000Z" }}
                                              :violations ["another-violation"]}) [:violations])
@@ -31,7 +31,7 @@
       { :merchant 333 :amount 10 :time "2019-02-13T10:59:00.000Z" }])
 
   (fact "not high-frequency-small-interva"
-   (get-in (high-frequency-small-interval {:chain nil
+   (get-in (high-frequency-small-interval! {:chain nil
                                             :account-state {:activeCard false}
                                             :new-transaction {:transaction { :merchant 333 :amount 10 :time "2019-02-13T10:59:00.000Z" }}
                                             :violations []}) [:violations])

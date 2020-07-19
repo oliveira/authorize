@@ -27,8 +27,8 @@
   [new-transaction]
   (let [context {:chain [violations/insufficient-limit
                          violations/card-not-active
-                         violations/doubled-transaction
-                         violations/high-frequency-small-interval
+                         violations/doubled-transaction!
+                         violations/high-frequency-small-interval!
                          capture]
                  :account-state (account/find-account)
                  :new-transaction new-transaction
