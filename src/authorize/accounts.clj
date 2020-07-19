@@ -1,5 +1,6 @@
 (ns authorize.accounts
   (:require [clojure.core.match :refer [match]]
+            [clojure.data.json :as json]
             [authorize.database :as db]
             [authorize.violations :as violations]))
 
@@ -9,9 +10,10 @@
 
 (defn creating-rules
   [account previous-state]
-  (match [previous-state]
-    [(previous-state :guard #(empty? %))] (save-account account)
-    [(previous-state :guard #(not (empty? %)))] (violations/already-initialized previous-state)))
+  (json/write-str
+    (match [previous-state]
+      [(previous-state :guard #(empty? %))] (save-account account)
+      [(previous-state :guard #(not (empty? %)))] (violations/already-initialized previous-state))))
 
 (defn find-account
   []

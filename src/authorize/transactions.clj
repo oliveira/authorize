@@ -1,5 +1,6 @@
 (ns authorize.transactions
   (:require [authorize.accounts :as account]
+            [clojure.data.json :as json]
             [authorize.violations :as violations]
             [authorize.database :as db]))
 
@@ -18,9 +19,9 @@
         new-transaction (get-in context [:new-transaction])
         violations (get-in context [:violations])]
 
-    (if (empty? violations)
-      (persist-data account-state new-transaction violations)
-      (str {:account account-state, :violations violations}))))
+    (json/write-str(if (empty? violations)
+                      (persist-data account-state new-transaction violations)
+                      {:account account-state, :violations violations}))))
 
 (defn create-transaction
   [new-transaction]
