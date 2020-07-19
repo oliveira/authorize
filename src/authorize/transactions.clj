@@ -23,8 +23,8 @@
   (let [chain
          [violations/insufficient-limit
           violations/card-not-active
-          violations/doubled-transaction
-          violations/high-frequency-small-interval
+          violations/doubled-transaction!
+          violations/high-frequency-small-interval!
           capture]
         account-state (account/find-account)]
     (violations/continue chain account-state new-transaction [])))

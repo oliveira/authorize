@@ -63,7 +63,7 @@
   [transactions-list transaction]
   (get-transactions-in-time-interval transactions-list transaction 2))
 
-(defn doubled-transaction
+(defn doubled-transaction!
   [chain account-state new-transaction violations]
   (let [transactions-list (db/search-by-table db/transaction-db :transaction)
         interval-transactions (transactions-two-minutes-interval transactions-list new-transaction)
@@ -73,7 +73,7 @@
       (continue chain account-state new-transaction (conj violations "doubled-transaction"))
       (continue chain account-state new-transaction violations))))
 
-(defn high-frequency-small-interval
+(defn high-frequency-small-interval!
   [chain account-state new-transaction violations]
   (let [transactions-list (db/search-by-table db/transaction-db :transaction)
         interval-transactions (transactions-two-minutes-interval transactions-list new-transaction)]
