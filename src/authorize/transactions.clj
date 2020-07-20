@@ -1,18 +1,15 @@
 (ns authorize.transactions
-  (:require [authorize.accounts :as account]
-            [clojure.data.json :as json]
-            [authorize.violations :as violations]
-            [authorize.repository.accounts :as repository]
-            [authorize.database :as db]))
+  (:require [authorize.violations :as violations]
+            [authorize.repository.accounts :as repository-account]
+            [authorize.repository.transactions :as repository-transaction]))
 
 (defn persist-data
-  [account-state new-transaction violations]
-  (let [{available-limit :availableLimit active-card :activeCard} account-state
-        {{amount :amount} :transaction} new-transaction
-        newAmount (- available-limit amount)]
+  [account-state new-transaction]
+  (let [available-limit (get-in account-state [:availableLimit])
+        amount (get-in new-transaction [:transaction :amount])]
 
-  (db/push db/transaction-db :transaction (:transaction new-transaction))
-  (repository/save-account {:activeCard active-card :availableLimit newAmount})))
+    (repository-transaction/save-transaction new-transaction)
+    (repository-account/save-account (assoc account-state :availableLimit (- available-limit amount)))))
 
 (defn capture
   [context]
@@ -20,9 +17,9 @@
         new-transaction (get-in context [:new-transaction])
         violations (get-in context [:violations])]
 
-                    (if (empty? violations)
-                      (persist-data account-state new-transaction violations)
-                      {:account account-state, :violations violations})))
+    (if (empty? violations)
+      (persist-data account-state new-transaction)
+      {:account account-state, :violations violations})))
 
 (defn create-transaction
   [new-transaction]
@@ -31,7 +28,7 @@
                          violations/doubled-transaction!
                          violations/high-frequency-small-interval!
                          capture]
-                 :account-state (repository/find-account)
+                 :account-state (repository-account/find-account)
                  :new-transaction new-transaction
                  :violations []}]
 
