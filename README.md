@@ -222,7 +222,7 @@ docker run -i authorizer < operations
 ## Development
 ### Run tests
 
-Run all unit tests (and :violations, :transactions or :accounts to run specific scenarios)
+Run all unit tests
 
 ```bash
 lein midje
