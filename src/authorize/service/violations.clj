@@ -10,15 +10,14 @@
   [context]
   (let [chain (:chain context)]
     (if chain
-      (let [next-one (first chain)]
-        (next-one (assoc context :chain (rest chain))))
+      (let [next-function (first chain)]
+        (next-function (assoc context :chain (rest chain))))
       (dissoc context :chain))))
 
 (defn insufficient-limit
   [context]
   (let [available-limit (get-in context [:account-state :availableLimit])
-        amount (get-in context [:new-transaction :transaction :amount])
-        violations (get-in context [:violations])]
+        amount (get-in context [:new-transaction :transaction :amount])]
 
     (if (> amount available-limit)
       (continue (update-in context [:violations] conj "insufficient-limit"))
@@ -26,8 +25,7 @@
 
 (defn card-not-active
   [context]
-  (let [active-card (get-in context [:account-state :activeCard])
-        violations (get-in context [:violations])]
+  (let [active-card (get-in context [:account-state :activeCard])]
 
     (if (false? active-card)
       (continue (update-in context [:violations] conj "card-not-active"))
@@ -75,8 +73,7 @@
   (let [transactions-list (repository-transaction/find-all)
         new-transaction (get-in context [:new-transaction])
         interval-transactions (transactions-two-minutes-interval transactions-list new-transaction)
-        similar-transactions (get-similar-transactions interval-transactions new-transaction)
-        violations (get-in context [:violations])]
+        similar-transactions (get-similar-transactions interval-transactions new-transaction)]
 
     (if (>= (count similar-transactions) 2)
       (continue (update-in context [:violations] conj "doubled-transaction"))

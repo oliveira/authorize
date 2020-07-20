@@ -1,8 +1,7 @@
 (ns violations.high_frequency_small_interval_test
   (:require [authorize.database :as db]
-            [authorize.service.violations :refer :all]
+            [authorize.service.violations :refer [high-frequency-small-interval!]]
             [midje.sweet :refer :all]))
-
 
 (facts "violated high-frequency-small-interval when three or more transactions has been captured in last two minutes"
   (against-background (db/search-by-table db/transaction-db :transaction)

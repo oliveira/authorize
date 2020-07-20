@@ -1,5 +1,5 @@
 (ns violations.already_initialized_test
-  (:require [authorize.service.accounts :refer :all]
+  (:require [authorize.service.accounts :refer [creating-rules]]
             [midje.sweet :refer :all]))
 
 (facts "violated already-initialized"

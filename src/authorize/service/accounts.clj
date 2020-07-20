@@ -1,7 +1,6 @@
 (ns authorize.service.accounts
   (:require [authorize.repository.accounts :as repository-account]
-            [authorize.service.violations :as violations]
-            [clojure.core.match :refer [match]]))
+            [authorize.service.violations :as violations]))
 
 (defn creating-rules
   [account previous-state]

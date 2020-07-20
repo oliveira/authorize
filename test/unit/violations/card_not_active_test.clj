@@ -1,5 +1,5 @@
 (ns violations.card_not_active_test
-  (:require [authorize.service.violations :refer :all]
+  (:require [authorize.service.violations :refer [card-not-active]]
             [midje.sweet :refer :all]))
 
 (facts "card not active scenario"

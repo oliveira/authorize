@@ -1,6 +1,5 @@
 (ns transactions.transactions_test
-  (:require [authorize.database :as db]
-            [authorize.repository.accounts :as repository-account]
+  (:require [authorize.repository.accounts :as repository-account]
             [authorize.service.transactions :as service-transaction]
             [midje.sweet :refer :all]))
 
