@@ -1,4 +1,4 @@
-(ns authorize.violations
+(ns authorize.service.violations
   (:require [authorize.repository.transactions :as repository-transaction]
             [clj-time [core :as time] [local :as local-time]]))
 

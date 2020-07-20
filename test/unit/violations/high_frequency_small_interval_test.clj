@@ -1,6 +1,6 @@
 (ns violations.high_frequency_small_interval_test
   (:require [midje.sweet :refer :all]
-            [authorize.violations :refer :all]
+            [authorize.service.violations :refer :all]
             [authorize.database :as db]))
 
 

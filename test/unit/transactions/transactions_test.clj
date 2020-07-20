@@ -1,6 +1,6 @@
 (ns transactions.transactions_test
   (:require [midje.sweet :refer :all]
-            [authorize.transactions :refer :all]
+            [authorize.service.transactions :as service-transaction]
             [authorize.database :as db]
             [authorize.repository.accounts :as repository-account]))
 
@@ -9,5 +9,5 @@
     => {:account {:activeCard true :availableLimit 80} :violations []})
 
   (fact "should create a transaction"
-    (create-transaction {:transaction {:merchant 333, :amount 10, :time "2019-02-13T03:50:00.000Z"}})
+    (service-transaction/create {:transaction {:merchant 333, :amount 10, :time "2019-02-13T03:50:00.000Z"}})
       => {:account {:activeCard true :availableLimit 80} :violations []}))

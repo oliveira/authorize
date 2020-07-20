@@ -1,6 +1,6 @@
 (ns violations.already_initialized_test
   (:require [midje.sweet :refer :all]
-            [authorize.accounts :refer :all]))
+            [authorize.service.accounts :refer :all]))
 
 (facts "violated already-initialized"
   (fact "when account already initialized"

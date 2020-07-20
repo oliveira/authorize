@@ -1,6 +1,6 @@
 (ns violations.doubled_transaction_test
   (:require [midje.sweet :refer :all]
-            [authorize.violations :refer :all]
+            [authorize.service.violations :refer :all]
             [authorize.database :as db]))
 
 (facts "doubled transaction scenario"

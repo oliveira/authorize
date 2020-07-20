@@ -1,6 +1,6 @@
 (ns authorize.controller
-  (:require [authorize.accounts :as accounts]
-            [authorize.transactions :as transactions]
+  (:require [authorize.service.accounts :as service-account]
+            [authorize.service.transactions :as service-transaction]
             [clojure.core.match :refer [match]]
             [clojure.data.json :as json]))
 
@@ -14,8 +14,8 @@
 
   (map-to-json
     (match [event-mapped]
-      [{:account _}] (accounts/create-account event-mapped)
-      [{:transaction _}] (transactions/create-transaction event-mapped)))))
+      [{:account _}] (service-account/create event-mapped)
+      [{:transaction _}] (service-transaction/create event-mapped)))))
 
 (defn create-events
   [events]

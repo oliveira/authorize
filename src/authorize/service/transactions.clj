@@ -1,5 +1,5 @@
-(ns authorize.transactions
-  (:require [authorize.violations :as violations]
+(ns authorize.service.transactions
+  (:require [authorize.service.violations :as violations]
             [authorize.repository.accounts :as repository-account]
             [authorize.repository.transactions :as repository-transaction]))
 
@@ -34,6 +34,6 @@
 
     (violations/continue context)))
 
-(defn create-transaction
+(defn create
   [new-transaction]
   (creating-rules new-transaction))

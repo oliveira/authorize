@@ -1,7 +1,7 @@
-(ns authorize.accounts
+(ns authorize.service.accounts
   (:require [clojure.core.match :refer [match]]
             [authorize.repository.accounts :as repository-account]
-            [authorize.violations :as violations]))
+            [authorize.service.violations :as violations]))
 
 (defn creating-rules
   [account previous-state]
@@ -9,7 +9,7 @@
     (repository-account/save account)
     (violations/already-initialized previous-state)))
 
-(defn create-account
+(defn create
   [new-account]
   (let [previous-state (repository-account/find-state)
        {account-data :account} new-account]
