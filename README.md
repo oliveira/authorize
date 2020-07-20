@@ -6,7 +6,7 @@ Simple authorization handler created for Nubank
 
 ## Table of Contents
 
-- [Arquitetura](#arquitetura)
+- [Architecture](#architecture)
 - [Dependencies](#dependencies)
 - [Setup](#setup)
 - [Violations](#violations)
@@ -18,7 +18,15 @@ Simple authorization handler created for Nubank
 - [Development](#development)
   - [Run tests](#run-tests)
 
-## Arquitetura
+## Architecture
+Essa proposta de arquitetura para um handler de autorizações foi baseada em algumas premissas. Vamos a elas:
+* Ser expansivel
+* Ter fácil manutenção
+* Isolamento da regra de negócio para que houvesse uma boa cobertura de testes
+
+Para alcançar essas premissas, imaginei que pudesse implementar o Repository Pattern para isolar a lógica de acesso aos dados. Já o domínio ficaria concentrado numa camada chamada Service. Tentei aplicar o conceito de bounded context (DDD) para isolar os domínios e acredito ter chegado num resultado razoável.
+
+De maneira geral foi interessante assumir o desafio de desenvolver o projeto em clojure. Não tenho domínio da linguagem e ainda assim percebi seus benefícios. A agilidade no desenvolvimento e a facilidade em refatorar com frequência foram notórios. Pontos esses só alcançados pela garantia que os testes unitários trouxeram. Dessa forma foi possível manter 90%> cobertura de código durante todo o desenvolvimento.
 
 ## Dependencies
 
