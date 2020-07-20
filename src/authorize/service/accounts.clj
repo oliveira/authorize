@@ -1,12 +1,12 @@
 (ns authorize.service.accounts
   (:require [authorize.repository.accounts :as repository-account]
-            [authorize.service.violations :as violations]))
+            [authorize.service.violations :as service-violations]))
 
 (defn creating-rules
   [account previous-state]
   (if (empty? previous-state)
     (repository-account/save account)
-    (violations/already-initialized previous-state)))
+    (service-violations/already-initialized previous-state)))
 
 (defn create
   [new-account]

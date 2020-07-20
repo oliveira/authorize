@@ -1,7 +1,7 @@
 (ns authorize.service.transactions
   (:require [authorize.repository.accounts :as repository-account]
             [authorize.repository.transactions :as repository-transaction]
-            [authorize.service.violations :as violations]))
+            [authorize.service.violations :as service-violations]))
 
 (defn persist-data
   [account-state new-transaction]
@@ -25,16 +25,16 @@
 
 (defn creating-rules
   [new-transaction]
-  (let [context {:chain [violations/insufficient-limit
-                         violations/card-not-active
-                         violations/doubled-transaction!
-                         violations/high-frequency-small-interval!
+  (let [context {:chain [service-violations/insufficient-limit
+                         service-violations/card-not-active
+                         service-violations/doubled-transaction!
+                         service-violations/high-frequency-small-interval!
                          capture]
                  :account-state (repository-account/find-state)
                  :new-transaction new-transaction
                  :violations []}]
 
-    (violations/continue context)))
+    (service-violations/continue context)))
 
 (defn create
   [new-transaction]
