@@ -25,7 +25,7 @@ This architecture proposal for an authorization handler was based on some premis
 * Easy maintenance
 
 
-To fulfill the first premise, I thought I could implement the Repository Pattern. In this way, it was possible to separate the data access logic from the domain logic. This would be concentrated in a layer called Service. I tried to apply the bounded context (DDD) to isolate the domains and I believe I've arrived a reasonable result. I believe that architectures are evolutionary and the proposed structure could at some point receive other layers to accompany the needs and growth of the application.
+To fulfill the first premise, I thought I could implement the Repository Pattern. In this way, it was possible to separate the data access logic from the domain logic. This would be concentrated in a layer called Service. I tried in some way to apply the bounded context (DDD) to isolate the domains and I believe I've arrived a reasonable result. I believe that architectures are evolutionary and the proposed structure could at some point receive other layers to accompany the needs and growth of the application.
 
 It was interesting to take the challenge of developing the project in clojure. I am not proficient in that language and yet I realized its benefits. The agility in development and the ease of refactoring were often notorious. These points were only achieved by the guarantee that the unit tests brought. In this way it was possible to maintain a good code coverage (90%>) throughout the development.
 
