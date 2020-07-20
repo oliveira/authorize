@@ -10,10 +10,9 @@
 
 (defn creating-rules
   [account previous-state]
-  (json/write-str
     (match [previous-state]
       [(previous-state :guard #(empty? %))] (save-account account)
-      [(previous-state :guard #(not (empty? %)))] (violations/already-initialized previous-state))))
+      [(previous-state :guard #(not (empty? %)))] (violations/already-initialized previous-state)))
 
 (defn find-account
   []

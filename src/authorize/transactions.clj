@@ -19,9 +19,9 @@
         new-transaction (get-in context [:new-transaction])
         violations (get-in context [:violations])]
 
-    (json/write-str(if (empty? violations)
+                    (if (empty? violations)
                       (persist-data account-state new-transaction violations)
-                      {:account account-state, :violations violations}))))
+                      {:account account-state, :violations violations})))
 
 (defn create-transaction
   [new-transaction]
