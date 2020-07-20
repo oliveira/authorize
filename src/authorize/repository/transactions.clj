@@ -3,7 +3,8 @@
 
 (defn save
   [new-transaction]
-  (db/push db/transaction-db :transaction (:transaction new-transaction)))
+  (db/push db/transaction-db :transaction
+    (:transaction new-transaction)))
 
 (defn find-all
   []

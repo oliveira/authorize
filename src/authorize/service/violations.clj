@@ -4,13 +4,14 @@
 
 (defn already-initialized
   [account-data]
-  {:account account-data, :violations ["account-already-initialized"]})
+  {:account account-data :violations ["account-already-initialized"]})
 
 (defn continue
   [context]
   (let [chain (:chain context)]
     (if chain
-      (let [next-one (first chain)] (next-one (assoc context :chain (rest chain))))
+      (let [next-one (first chain)]
+        (next-one (assoc context :chain (rest chain))))
       (dissoc context :chain))))
 
 (defn insufficient-limit
@@ -48,17 +49,20 @@
   [interval date]
   (time/within? interval date))
 
-(defn get-similar-transactions [transactions-list transaction]
+(defn get-similar-transactions
+  [transactions-list transaction]
   (let [{{merchant :merchant amount :amount} :transaction} transaction]
-    (filter (fn [transaction]
-              (and (= amount (:amount transaction))
-                   (= merchant (:merchant transaction))))
+
+    (filter (fn [trx]
+              (and (= amount (:amount trx))
+                   (= merchant (:merchant trx))))
                    transactions-list)))
 
 (defn get-transactions-in-time-interval
   [transactions-list transaction delta]
   (let [{{time :time} :transaction} transaction
         interval (get-time-interval time delta)]
+
     (filter (fn [tx]
               (within-interval? interval (parse-date (:time tx)))) transactions-list)))
 

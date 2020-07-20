@@ -1,6 +1,6 @@
 (ns authorize.core
-  (:require [clojure.data.json :as json]
-            [authorize.controller :refer :all])
+  (:require [authorize.controller :refer [authorizer]]
+            [clojure.data.json :as json])
   (:gen-class))
 
 (defn -main

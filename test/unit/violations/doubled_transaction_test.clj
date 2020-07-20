@@ -1,11 +1,11 @@
 (ns violations.doubled_transaction_test
-  (:require [midje.sweet :refer :all]
+  (:require [authorize.database :as db]
             [authorize.service.violations :refer :all]
-            [authorize.database :as db]))
+            [midje.sweet :refer :all]))
 
 (facts "doubled transaction scenario"
   (against-background (db/search-by-table db/transaction-db :transaction)
-  => [{ :merchant 333 :amount 10 :time "2019-02-13T10:59:00.000Z" },
+  => [{ :merchant 333 :amount 10 :time "2019-02-13T10:59:00.000Z" }
       { :merchant 333 :amount 10 :time "2019-02-13T10:59:30.000Z" }])
 
   (fact "doubled transaction"
@@ -24,7 +24,7 @@
 
 (facts "not doubled transaction scenario"
   (against-background (db/search-by-table db/transaction-db :transaction)
-  => [{ :merchant 333 :amount 10 :time "2019-02-13T10:59:00.000Z" },
+  => [{ :merchant 333 :amount 10 :time "2019-02-13T10:59:00.000Z" }
       { :merchant 333 :amount 10 :time "2019-02-13T10:59:30.000Z" }])
 
   (fact "not doubled transaction"

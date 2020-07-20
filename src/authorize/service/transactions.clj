@@ -1,7 +1,7 @@
 (ns authorize.service.transactions
-  (:require [authorize.service.violations :as violations]
-            [authorize.repository.accounts :as repository-account]
-            [authorize.repository.transactions :as repository-transaction]))
+  (:require [authorize.repository.accounts :as repository-account]
+            [authorize.repository.transactions :as repository-transaction]
+            [authorize.service.violations :as violations]))
 
 (defn persist-data
   [account-state new-transaction]
@@ -9,7 +9,9 @@
         amount (get-in new-transaction [:transaction :amount])]
 
     (repository-transaction/save new-transaction)
-    (repository-account/save (assoc account-state :availableLimit (- available-limit amount)))))
+    (repository-account/save (assoc
+                              account-state
+                              :availableLimit (- available-limit amount)))))
 
 (defn capture
   [context]
@@ -19,7 +21,7 @@
 
     (if (empty? violations)
       (persist-data account-state new-transaction)
-      {:account account-state, :violations violations})))
+      {:account account-state :violations violations})))
 
 (defn creating-rules
   [new-transaction]

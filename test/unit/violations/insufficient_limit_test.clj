@@ -1,6 +1,6 @@
 (ns violations.insufficient_limit_test
-  (:require [midje.sweet :refer :all]
-            [authorize.service.violations :refer :all]))
+  (:require [authorize.service.violations :refer :all]
+            [midje.sweet :refer :all]))
 
 (facts "insufficient limit scenario"
   (fact "amount > than limit"

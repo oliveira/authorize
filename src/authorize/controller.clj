@@ -4,8 +4,10 @@
             [clojure.core.match :refer [match]]
             [clojure.data.json :as json]))
 
-(defn map-to-json [line]
-  (-> line (json/write-str)
+(defn map-to-json
+  [line]
+  (-> line
+      (json/write-str)
       (println)))
 
 (defn process-events
@@ -19,8 +21,9 @@
 
 (defn create-events
   [events]
-  (->> events (map process-events)
-      doall))
+  (->> events
+       (map process-events)
+       doall))
 
 (defn get-events
  []
