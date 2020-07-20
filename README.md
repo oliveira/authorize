@@ -29,9 +29,9 @@ Para alcançar essas premissas, imaginei que pudesse implementar o Repository Pa
 De maneira geral foi interessante assumir o desafio de desenvolver o projeto em clojure. Não tenho domínio da linguagem e ainda assim percebi seus benefícios. A agilidade no desenvolvimento e a facilidade em refatorar com frequência foram notórios. Pontos esses só alcançados pela garantia que os testes unitários trouxeram. Dessa forma foi possível manter 90%> cobertura de código durante todo o desenvolvimento.
 
 ## Dependencies
-
+- [Java OpenJDK 8](https://openjdk.java.net/install/)
 - [Clojure = 1.10.1](https://clojure.org/guides/getting_started#_clojure_installer_and_cli_tools)
-- [Leiningen = ^2.9.3](https://leiningen.org/#install)
+- [Leiningen ^2.9.3](https://leiningen.org/#install)
 - [Docker](https://docs.docker.com/get-docker)
 
 ## Setup
