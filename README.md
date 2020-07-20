@@ -62,7 +62,7 @@ lein uberjar
 ```
 
 ```bash
-java -jar target/authorize-standalone.jar < operation
+java -jar target/authorize-standalone.jar < operations
 ```
 
 ### Binary: build and usage
@@ -100,9 +100,9 @@ docker run -i authorizer < operations
 #### Output
 
 ```
-{:account {:activeCard true, :availableLimit 100}, :violations []}
-{:account {:activeCard true, :availableLimit 100}, :violations ["account-already-initialized"]}
-{:account {:activeCard true, :availableLimit 90}, :violations []}
+{"account":{"activeCard":true,"availableLimit":100},"violations":[]}
+{"account":{"activeCard":true,"availableLimit":100},"violations":["account-already-initialized"]}
+{"account":{"activeCard":true,"availableLimit":90},"violations":[]}
 ```
 ---
 ### Card not active
@@ -123,8 +123,8 @@ docker run -i authorizer < operations
 #### Output
 
 ```
-{:account {:activeCard true, :availableLimit 100}, :violations []}
-{:account {:activeCard true, :availableLimit 100}, :violations ["card-not-active"]}
+{"account":{"activeCard":false,"availableLimit":100},"violations":[]}
+{"account":{"activeCard":false,"availableLimit":100},"violations":["card-not-active"]}
 ```
 ---
 ### Doubled transaction
@@ -147,10 +147,10 @@ docker run -i authorizer < operations
 #### Output
 
 ```
-{:account {:activeCard true, :availableLimit 100}, :violations []}
-{:account {:activeCard true, :availableLimit 90}, :violations []}
-{:account {:activeCard true, :availableLimit 80}, :violations []}
-{:account {:activeCard true, :availableLimit 80}, :violations ["doubled-transaction"]}
+{"account":{"activeCard":true,"availableLimit":100},"violations":[]}
+{"account":{"activeCard":true,"availableLimit":90},"violations":[]}
+{"account":{"activeCard":true,"availableLimit":80},"violations":[]}
+{"account":{"activeCard":true,"availableLimit":80},"violations":["doubled-transaction"]}
 ```
 ---
 ### High frequency at small interval
@@ -176,13 +176,13 @@ docker run -i authorizer < operations
 #### Output
 
 ```
-{:account {:activeCard true, :availableLimit 100}, :violations []}
-{:account {:activeCard true, :availableLimit 90}, :violations []}
-{:account {:activeCard true, :availableLimit 80}, :violations []}
-{:account {:activeCard true, :availableLimit 70}, :violations []}
-{:account {:activeCard true, :availableLimit 70}, :violations ["high-frequency-small-interval"]}
-{:account {:activeCard true, :availableLimit 70}, :violations ["high-frequency-small-interval"]}
-{:account {:activeCard true, :availableLimit 60}, :violations []}
+{"account":{"activeCard":true,"availableLimit":100},"violations":[]}
+{"account":{"activeCard":true,"availableLimit":90},"violations":[]}
+{"account":{"activeCard":true,"availableLimit":80},"violations":[]}
+{"account":{"activeCard":true,"availableLimit":70},"violations":[]}
+{"account":{"activeCard":true,"availableLimit":70},"violations":["high-frequency-small-interval"]}
+{"account":{"activeCard":true,"availableLimit":70},"violations":["high-frequency-small-interval"]}
+{"account":{"activeCard":true,"availableLimit":60},"violations":[]}
 
 ```
 ---
@@ -205,10 +205,9 @@ docker run -i authorizer < operations
 #### Output
 
 ```
-{:account {:activeCard true, :availableLimit 60}, :violations []}
-{:account {:activeCard true, :availableLimit 10}, :violations []}
-{:account {:activeCard true, :availableLimit 10}, :violations ["insufficient-limit"]}
-
+{"account":{"activeCard":true,"availableLimit":60},"violations":[]}
+{"account":{"activeCard":true,"availableLimit":10},"violations":[]}
+{"account":{"activeCard":true,"availableLimit":10},"violations":["insufficient-limit"]}
 ```
 ---
 ## Development
