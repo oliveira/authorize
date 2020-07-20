@@ -19,14 +19,15 @@ Simple authorization handler created for Nubank
   - [Run tests](#run-tests)
 
 ## Architecture
-Essa proposta de arquitetura para um handler de autorizações foi baseada em algumas premissas. Vamos a elas:
-* Ser expansivel
-* Ter fácil manutenção
-* Isolamento da regra de negócio para que houvesse uma boa cobertura de testes
+This architecture proposal for an authorization handler was based on some premises:
+* Isolation of the business logic (provide good test coverage)
+* Extension (to add new rules and violations)
+* Easy maintenance
 
-Para alcançar essas premissas, imaginei que pudesse implementar o Repository Pattern para isolar a lógica de acesso aos dados. Já o domínio ficaria concentrado numa camada chamada Service. Tentei aplicar o conceito de bounded context (DDD) para isolar os domínios e acredito ter chegado num resultado razoável.
 
-De maneira geral foi interessante assumir o desafio de desenvolver o projeto em clojure. Não tenho domínio da linguagem e ainda assim percebi seus benefícios. A agilidade no desenvolvimento e a facilidade em refatorar com frequência foram notórios. Pontos esses só alcançados pela garantia que os testes unitários trouxeram. Dessa forma foi possível manter 90%> cobertura de código durante todo o desenvolvimento.
+To fulfill the first premise, I thought I could implement the Repository Pattern. In this way, it was possible to separate the data access logic from the domain logic. This would be concentrated in a layer called Service. I tried to apply the bounded context (DDD) to isolate the domains and I believe I've arrived a reasonable result. I believe that architectures are evolutionary and the proposed structure could at some point receive other layers to accompany the needs and growth of the application.
+
+It was interesting to take the challenge of developing the project in clojure. I am not proficient in that language and yet I realized its benefits. The agility in development and the ease of refactoring were often notorious. These points were only achieved by the guarantee that the unit tests brought. In this way it was possible to maintain a good code coverage (90%>) throughout the development.
 
 ## Dependencies
 - [Java OpenJDK 8](https://openjdk.java.net/install/)
