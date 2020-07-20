@@ -1,6 +1,7 @@
 (ns accounts.accounts_test
   (:require [midje.sweet :refer :all]
-            [authorize.accounts :as accounts]))
+            [authorize.accounts :as accounts]
+            [authorize.repository.accounts :as repository-account]))
 
 (facts "accounts operations"
   (fact "creating new account"
@@ -8,7 +9,7 @@
       => {:account {:activeCard true, :availableLimit 100}, :violations ["account-already-initialized"]})
 
   (fact "retrieving account"
-    (accounts/find-account)
+    (repository-account/find-state)
       => {:activeCard true :availableLimit 100})
 
   (fact "creating account without previous account"
@@ -20,5 +21,5 @@
       => {:account {:activeCard true, :availableLimit 100}, :violations ["account-already-initialized"]})
 
   (fact "save account data"
-    (accounts/save-account {:activeCard true :availableLimit 100})
+    (repository-account/save {:activeCard true :availableLimit 100})
       => {:account {:activeCard true :availableLimit 100} :violations []}))

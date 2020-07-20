@@ -8,8 +8,8 @@
   (let [available-limit (get-in account-state [:availableLimit])
         amount (get-in new-transaction [:transaction :amount])]
 
-    (repository-transaction/save-transaction new-transaction)
-    (repository-account/save-account (assoc account-state :availableLimit (- available-limit amount)))))
+    (repository-transaction/save new-transaction)
+    (repository-account/save (assoc account-state :availableLimit (- available-limit amount)))))
 
 (defn capture
   [context]
@@ -21,15 +21,19 @@
       (persist-data account-state new-transaction)
       {:account account-state, :violations violations})))
 
-(defn create-transaction
+(defn creating-rules
   [new-transaction]
   (let [context {:chain [violations/insufficient-limit
                          violations/card-not-active
                          violations/doubled-transaction!
                          violations/high-frequency-small-interval!
                          capture]
-                 :account-state (repository-account/find-account)
+                 :account-state (repository-account/find-state)
                  :new-transaction new-transaction
                  :violations []}]
 
     (violations/continue context)))
+
+(defn create-transaction
+  [new-transaction]
+  (creating-rules new-transaction))

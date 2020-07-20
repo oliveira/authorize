@@ -1,5 +1,5 @@
 (ns authorize.violations
-  (:require [authorize.database :as db]
+  (:require [authorize.repository.transactions :as repository-transaction]
             [clj-time [core :as time] [local :as local-time]]))
 
 (defn already-initialized
@@ -11,8 +11,7 @@
   (let [chain (:chain context)]
     (if chain
       (let [next-one (first chain)] (next-one (assoc context :chain (rest chain))))
-      (dissoc context :chain)
-      )))
+      (dissoc context :chain))))
 
 (defn insufficient-limit
   [context]
@@ -54,7 +53,7 @@
     (filter (fn [transaction]
               (and (= amount (:amount transaction))
                    (= merchant (:merchant transaction))))
-            transactions-list)))
+                   transactions-list)))
 
 (defn get-transactions-in-time-interval
   [transactions-list transaction delta]
@@ -69,7 +68,7 @@
 
 (defn doubled-transaction!
   [context]
-  (let [transactions-list (db/search-by-table db/transaction-db :transaction)
+  (let [transactions-list (repository-transaction/find-all)
         new-transaction (get-in context [:new-transaction])
         interval-transactions (transactions-two-minutes-interval transactions-list new-transaction)
         similar-transactions (get-similar-transactions interval-transactions new-transaction)
@@ -81,7 +80,7 @@
 
 (defn high-frequency-small-interval!
   [context]
-  (let [transactions-list (db/search-by-table db/transaction-db :transaction)
+  (let [transactions-list (repository-transaction/find-all)
         new-transaction (get-in context [:new-transaction])
         interval-transactions (transactions-two-minutes-interval transactions-list new-transaction)]
 

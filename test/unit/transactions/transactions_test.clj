@@ -1,11 +1,11 @@
 (ns transactions.transactions_test
   (:require [midje.sweet :refer :all]
             [authorize.transactions :refer :all]
-            [authorize.accounts :refer :all]
-            [authorize.database :as db]))
+            [authorize.database :as db]
+            [authorize.repository.accounts :as repository-account]))
 
 (facts "transactions"
-  (against-background (save-account {:activeCard true :availableLimit 90})
+  (against-background (repository-account/save {:activeCard true :availableLimit 90})
     => {:account {:activeCard true :availableLimit 80} :violations []})
 
   (fact "should create a transaction"
