@@ -2,6 +2,7 @@
   (:require [authorize.accounts :as account]
             [clojure.data.json :as json]
             [authorize.violations :as violations]
+            [authorize.repository.accounts :as repository]
             [authorize.database :as db]))
 
 (defn persist-data
@@ -11,7 +12,7 @@
         newAmount (- available-limit amount)]
 
   (db/push db/transaction-db :transaction (:transaction new-transaction))
-  (account/save-account {:activeCard active-card :availableLimit newAmount})))
+  (repository/save-account {:activeCard active-card :availableLimit newAmount})))
 
 (defn capture
   [context]
@@ -30,7 +31,7 @@
                          violations/doubled-transaction!
                          violations/high-frequency-small-interval!
                          capture]
-                 :account-state (account/find-account)
+                 :account-state (repository/find-account)
                  :new-transaction new-transaction
                  :violations []}]
 
