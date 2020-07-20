@@ -99,7 +99,7 @@ Check if account was previously initialized. Return "account-already-initialized
 ```json
 { "account": { "activeCard": true, "availableLimit": 100 } }
 { "account": { "activeCard": true, "availableLimit": 100 } }
-{ "transaction": { "merchant": "333", "amount": 10, "time": "2019-02-13T11:00:00.000Z" } }
+{ "transaction": { "merchant": "Bullguer", "amount": 10, "time": "2019-02-13T11:00:00.000Z" } }
 ```
 
 ```bash
@@ -122,7 +122,7 @@ Check if card is active at account entity. Return "card-not-active" if true and 
 
 ```json
 { "account": { "activeCard": false, "availableLimit": 100 } }
-{ "transaction": { "merchant": "333", "amount": 10, "time": "2019-02-13T11:00:00.000Z" } }
+{ "transaction": { "merchant": "Starbucks", "amount": 10, "time": "2019-02-13T11:00:00.000Z" } }
 ```
 
 ```bash
@@ -144,9 +144,9 @@ Check if there were two or more transactions with the same merchant and amount i
 
 ```json
 { "account": { "activeCard": true, "availableLimit": 100 } }
-{ "transaction": { "merchant": "333", "amount": 10, "time": "2019-02-13T11:00:00.000Z" } }
-{ "transaction": { "merchant": "333", "amount": 10, "time": "2019-02-13T11:00:00.000Z" } }
-{ "transaction": { "merchant": "333", "amount": 10, "time": "2019-02-13T11:00:00.000Z" } }
+{ "transaction": { "merchant": "Cuor di Crema", "amount": 10, "time": "2019-02-13T11:00:00.000Z" } }
+{ "transaction": { "merchant": "Cuor di Crema", "amount": 10, "time": "2019-02-13T11:00:00.000Z" } }
+{ "transaction": { "merchant": "Cuor di Crema", "amount": 10, "time": "2019-02-13T11:00:00.000Z" } }
 ```
 
 ```bash
@@ -170,12 +170,12 @@ Check if there were three or more transactions in a time window (2 minutes). Ret
 
 ```json
 { "account": { "activeCard": true, "availableLimit": 100 } }
-{ "transaction": { "merchant": "111", "amount": 10, "time": "2019-02-13T11:00:10.000Z" } }
-{ "transaction": { "merchant": "111", "amount": 10, "time": "2019-02-13T11:00:43.000Z" } }
-{ "transaction": { "merchant": "333", "amount": 10, "time": "2019-02-13T11:00:55.000Z" } }
-{ "transaction": { "merchant": "444", "amount": 10, "time": "2019-02-13T11:00:59.000Z" } }
-{ "transaction": { "merchant": "555", "amount": 10, "time": "2019-02-13T11:01:11.000Z" } }
-{ "transaction": { "merchant": "555", "amount": 10, "time": "2019-02-13T11:05:11.000Z" } }
+{ "transaction": { "merchant": "Lojas Americanas", "amount": 10, "time": "2019-02-13T11:00:10.000Z" } }
+{ "transaction": { "merchant": "Lojas Americanas", "amount": 10, "time": "2019-02-13T11:00:43.000Z" } }
+{ "transaction": { "merchant": "Submarino", "amount": 10, "time": "2019-02-13T11:00:55.000Z" } }
+{ "transaction": { "merchant": "Ricardo Eletro", "amount": 10, "time": "2019-02-13T11:00:59.000Z" } }
+{ "transaction": { "merchant": "Kalunga", "amount": 10, "time": "2019-02-13T11:01:11.000Z" } }
+{ "transaction": { "merchant": "Kalunga", "amount": 10, "time": "2019-02-13T11:05:11.000Z" } }
 ```
 
 ```bash
@@ -203,8 +203,8 @@ Check if available amount is bigger than the transaction amount. Return "insuffi
 
 ```json
 { "account": { "activeCard": true, "availableLimit": 60 } }
-{ "transaction": { "merchant": "111", "amount": 50, "time": "2019-02-13T11:00:10.000Z" } }
-{ "transaction": { "merchant": "111", "amount": 13, "time": "2019-02-13T11:00:43.000Z" } }
+{ "transaction": { "merchant": "Tok&Stok", "amount": 50, "time": "2019-02-13T11:00:10.000Z" } }
+{ "transaction": { "merchant": "Bullguer", "amount": 13, "time": "2019-02-13T11:00:43.000Z" } }
 
 ```
 
